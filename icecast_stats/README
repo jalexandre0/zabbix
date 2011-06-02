@@ -1,0 +1,18 @@
+To put this script to work, you must:
+
+0 - Read the script. It's very short an simple. 
+
+1 - Put above line in your crontab:
+	wget --user=user --password=password http://your_icecast_address:8080/admin/stats.xml -O /tmp/stats.xml
+
+2 - Put the script in /usr/local/bin/zabbix/icecast_stats (or where you want. After all, you are the Sysadmin, right? :-) )
+	with execute permission
+
+3 - Put the content of icecast.conf in your zabbix configuration file.
+
+4 - Install the XML::Simple perl module. If you use Debian, this package resolve: libxml-simple-perl
+	If you don't use Debian, you should use your package system or CPAN for install XML::Simple module.
+
+5 - Create the itens inside Zabbix and watch for results. 
+
+6 - Enjoy. :D
