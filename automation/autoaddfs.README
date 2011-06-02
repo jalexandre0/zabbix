@@ -1,0 +1,22 @@
+# Warning: I will not responsible if the script eat your cat, mess up with your zabbix configuration or
+# starting the World War IV. Use it at your own risk. ;)
+
+The autoaddfs is a hack to add filesystems in zabbix  until Zabbix 2.0 version ins't released.
+
+The goal here is parse the /etc/fstab file, get the ext(3|4)   or nfs mountpoints,
+add then to zabbix and create triggers for space < 20% and space < 10%.
+
+My backgound at work is composed by several servers with varied partition layouts.
+Because of this I can't template these checks.
+
+This script are  distributed by Puppet CMS to all servers, made my life
+very, very easy ( Yep, the team is made of several 'lazy' guys like me ).
+
+The work is not perfect, but, when I write, my goal is make it readable (I know, it's perl)
+for other sysadmins run and maybe, improve it for a more global background. 
+
+You will need the JSON::RPC::Client perl module to run it, and you will found this in
+libjson-rpc-perl Debian package. If you don't run Debian, you can search it using you 
+package management system or install it by CPAN.
+
+Well, cross your fingers, run the script and go take some beers. :)
