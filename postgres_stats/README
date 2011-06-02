@@ -1,0 +1,37 @@
+The script provides data collection for your PgSQL databases. 
+In Zabbix template, the items started with db_prefix are for
+individual database stats. For example, if you need the number of 
+total commits for zabbix database, you must enter with key:
+"postgres[db_commits,zabbix]" in your zabbix configuration.
+
+To make this scripts works, you must execute some easy steps:
+
+1 - Read the script. It's nice and I will be glad. ( Even if you don't like perl. ) 
+
+2 - Put the script under /usr/local/bin/zabbix or in any directory,
+	and don't forget to set permissions for postgres user/group.
+
+3 - Put the bellow content inside your /etc/sudoers file:
+
+# User Zabbix Session: needed for run some checks with Zabbix users.
+zabbix           ALL = (postgres) NOPASSWD: /usr/local/bin/zabbix/postgres_stats
+
+4 - Install the contrib package  for postgres, and install these sqls:
+	(You don't need reload the database :-) )
+	pg_buffercache.sql
+	pg_freespacemap.sql
+	pgstattuple.sql
+
+5 - Install the libdbi-perl and  libdbd-pg-perl packages if you use Debian/Ubuntu, 
+	or install these modules using CPAN if your package system don't provides them.
+
+6 -  Import the postgres.xml template in your zabbix installation.
+	(We don't have graphs until this time).
+
+7 - Put the content of postgres.conf in your zabbix agent configuration file. 
+
+8 - Set the monitoring itens for global and individual databases. 
+
+9 - Test, and send some bugs if you find one. (or corretion, who knows...) 
+
+10 - Go outside, take a walk or some beers with someone nice. 
