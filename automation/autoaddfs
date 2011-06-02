@@ -1,5 +1,7 @@
 #!/usr/bin/perl
 #	 A script to parse fstab and create items and triggers inside Zabbix NMS
+#	 This is a work in progress, so, read the autoaddfs.README and cross your fingers
+#    and don't blame me if this mess up your zabbix configuration. 
 #
 #    Copyright (C) <2011>  <Jefferson Alexandre dos Santos>, <jefferson.alexandre [at] gmail [dot] com> 
 #
