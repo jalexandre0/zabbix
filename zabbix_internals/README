@@ -1,0 +1,10 @@
+This is template I use for small, medium and large Zabbix Installs.
+It show me the queue status, cache status, values per second,
+Itens supported and unsupported.
+
+I also use this template to understand my client's zabbix install  and 
+determine what type of zabbix tuning  is needed. Usefull when used in 
+conjunction with my or other Postgres and General Linux Server templates.
+
+After import, go outside, take a walk or go to the near Music Instruments 
+Shop and play a nice and sweet Gibson ES-335. :-)
