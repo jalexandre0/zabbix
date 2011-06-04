@@ -25,7 +25,7 @@ use Data::Dumper ;
 use strict ;
 use warnings ; 
 
-my @items = undef ;
+my @items ; 
 #Get Itens to be created before all hard work ;) 
 open my $input_fh, "</etc/fstab " 
 	or die "Cant open file" ;
@@ -36,10 +36,6 @@ while ( my $line = <$input_fh> ) {
 	}
 }
 close $input_fh ;
-
-#Removing the undef of line 28.
-#I won't go to heaven because this. 
-my $junk = shift(@items) ;
 
 #JSON Authentication and server variables - Adjust for your environment
 my ($zabbix, $api_user, $api_passwd) = ("http://zabbix.homelinux/zabbix/api_jsonrpc.php", "apiuser", "apipass" ) ;
@@ -111,8 +107,8 @@ sub get_hostid {
 		auth => $auth,
 		id => 1,
 	} ;
-	my $regex = "\"hostid\"" ;
-	my $hostid = parse($zabbix,$client,$query,$regex) ;
+	my $key = "\"hostid\"" ;
+	my $hostid = parse($zabbix,$client,$query,$key) ;
 	unless ($hostid) {
 		print "Unable to find  $fqdn in Zabbix Server\n" ; 
 		print "Exiting before the room  explode :-) \n" ; 
@@ -138,8 +134,8 @@ sub get_applicationid {
 		auth => $auth,
 		id => 1,
 	} ;
-	my $regex = "\"applicationid\"" ;
-	my $applicationid = parse($zabbix,$client,$query,$regex) ;
+	my $key = "\"applicationid\"" ;
+	my $applicationid = parse($zabbix,$client,$query,$key) ;
 	return $applicationid ;
 }
 sub check_existence {
@@ -159,8 +155,8 @@ sub check_existence {
 		auth => $auth,
 		id => 1,
 	} ;
-	my $regex = "\"itemid\"" ;
-	my $itemid = parse($zabbix,$client,$query,$regex) ;
+	my $key = "\"itemid\"" ;
+	my $itemid = parse($zabbix,$client,$query,$key) ;
 	if ($itemid) {
 		print " The $item already created. Run before the zombies eat your brain\n" ; 
 	}
@@ -184,8 +180,8 @@ sub create_item {
 		auth => $auth,
 		id => 1,
 	} ;
-	my $regex  = "\"itemids\"" ;
-	my $itemid = parse($zabbix,$client,$query,$regex) ;
+	my $key  = "\"itemids\"" ;
+	my $itemid = parse($zabbix,$client,$query,$key) ;
 	return $itemid ;
 }
 
@@ -203,19 +199,18 @@ sub create_trigger {
 		auth => $auth,
 		id => 1,
 	} ;
-	my $regex = "\"triggerid\"" ;
-	my $triggerid = parse($zabbix,$client,$query,$regex) ;
+	my $key = "\"triggerid\"" ;
+	my $triggerid = parse($zabbix,$client,$query,$key) ;
 	return $triggerid ;
 }
 
 sub parse {
-	my ($zabbix, $client, $query, $regex) = @_ ;
+	my ($zabbix, $client, $query, $key) = @_ ;
 	my $json_query  = $client->call($zabbix,$query);
 	my $json_result = $json_query->result ;
-#	print Dumper($json_result) ;
 	my @result = ( split /,/, (encode_json $json_result)) ;
 	foreach my $returned_item (@result) {
-		if ($returned_item =~ /$regex/) {
+		if ($returned_item =~ /$key/) {
 			$returned_item =~ s/\D//g ;
 			return $returned_item ;	
 		}
