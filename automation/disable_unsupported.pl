@@ -68,7 +68,7 @@ sub item_search {
 		id => 1,
 	};
 	my $unsup_items = parse($zabbix, $client, $query) ;
-    my $total = scalar @{$unsup_items} ;
+	my $total = scalar @{$unsup_items} ;
 	print "Found $total items unsupported. \n";  	   
 	my @itemids ;
 	foreach ( my $count=0 ; $count < $total ; $count++ ) {
