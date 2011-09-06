@@ -1,0 +1,153 @@
+#!/usr/bin/perl 
+# --
+# Sistema Automato de Cadastro de Incidentes (Automated System for Incident Register)
+# Who is saci?  http://en.wikipedia.org/wiki/Saci_(Brazilian_folklore)
+#
+# Copyright (C) <2011>  <Jefferson Alexandre dos Santos>, <jefferson.santos@tecnisys.com.br> 
+# 
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+use strict;
+use warnings;
+use Data::Dumper ;
+use AppConfig qw/:argcount/ ;
+
+use SOAP::Lite('autodispatch', proxy => "http://otrs.company.com/otrs/rpc.pl");
+my $rpc_connect = Core->new()        ;
+my $config = AppConfig->new() ;
+
+$config->define(
+    'SOAP_USER',     => { ARGCOUNT => ARGCOUNT_ONE, DEFAULT => "none",  },  
+    'SOAP_PASSWORD', => { ARGCOUNT => ARGCOUNT_ONE, DEFAULT => "none",  },  
+    'OPEN_SUBJECT',  => { ARGCOUNT => ARGCOUNT_ONE, DEFAULT => "none",  },  
+    'OPEN_QUEUE',    => { ARGCOUNT => ARGCOUNT_ONE, DEFAULT => "none",  },  
+    'LOCK',          => { ARGCOUNT => ARGCOUNT_ONE, DEFAULT => "none",  },  
+    'PRIORITY',      => { ARGCOUNT => ARGCOUNT_ONE, DEFAULT => "none",  },  
+    'OPEN_STATE',    => { ARGCOUNT => ARGCOUNT_ONE, DEFAULT => "none",  },  
+    'OPEN_OWNER',    => { ARGCOUNT => ARGCOUNT_ONE, DEFAULT => "none",  },
+    'OPEN_USER',     => { ARGCOUNT => ARGCOUNT_ONE, DEFAULT => "none",  },
+    'RESPONSIBLE',   => { ARGCOUNT => ARGCOUNT_ONE, DEFAULT => "none",  },
+    'MAIL_DOMAIN'    => { ARGCOUNT => ARGCOUNT_ONE, DEFAULT => "none",  },
+    'MAIL_FROM',     => { ARGCOUNT => ARGCOUNT_ONE, DEFAULT => "none",  },
+    'MAIL_TO',       => { ARGCOUNT => ARGCOUNT_ONE, DEFAULT => "none",  },
+    'MAIL_CUSTOMER', => { ARGCOUNT => ARGCOUNT_ONE, DEFAULT => "none",  },
+    'CLOSE_STATE',   => { ARGCOUNT => ARGCOUNT_ONE, DEFAULT => "none",  },
+    'CLOSE_USER',    => { ARGCOUNT => ARGCOUNT_ONE, DEFAULT => "none",  },
+    'CLOSE_SUBJECT', => { ARGCOUNT => ARGCOUNT_ONE, DEFAULT => "none", },  
+);
+
+my $config_file     = shift @ARGV        ;
+my $trigger_subject = shift @ARGV         ;
+my $trigger_body    = join(" ", @ARGV)  ;
+
+unless($config_file) { $config_file = "saci.conf" } ;
+$config->file($config_file) ;
+
+my $soap_user       = $config->SOAP_USER()      ;
+my $soap_password   = $config->SOAP_PASSWORD()  ;
+my $open_subject    = $config->OPEN_SUBJECT()   ;
+my $open_queue      = $config->OPEN_QUEUE()     ;  
+my $lock            = $config->LOCK()           ; 
+my $priority        = $config->PRIORITY()       ; 
+my $open_state      = $config->OPEN_STATE()     ; 
+my $mail_customer   = $config->MAIL_CUSTOMER()  ; 
+my $open_owner      = $config->OPEN_OWNER()     ; 
+my $responsible     = $config->RESPONSIBLE()    ; 
+my $mail_from       = $config->MAIL_FROM()      ;          
+my $mail_to         = $config->MAIL_TO()        ;
+my $open_user       = $config->OPEN_USER()      ;
+my $close_state     = $config->CLOSE_STATE      ; 
+my $close_user      = $config->CLOSE_USER()     ;  
+my $close_subject   = $config->CLOSE_SUBJECT()  ;
+my ( $hostname, $trigger_name ) = split(/:/, $trigger_body) ;
+
+if ( $trigger_subject eq  $open_subject ) { 
+    my @ticket_ids = search_ticket($hostname, $trigger_name) ;    
+    unless (@ticket_ids ) {
+        open_ticket( $hostname, $trigger_name) }
+}
+
+if ( $trigger_subject eq $close_subject ) {
+    my @ticket_ids = search_ticket($hostname, $trigger_name) ;    
+    if (@ticket_ids) {
+        close_ticket(@ticket_ids) } 
+}
+
+#-- Functions
+
+sub open_ticket {
+    my ( $hostname, $trigger_name ) = @_ ;
+    my $ticket_number = $rpc_connect->Dispatch( $soap_user, $soap_password, 'TicketObject','TicketCreateNumber');
+    my %ticket_data = (
+    TN           => $ticket_number,
+    Title        => "$hostname: $trigger_name",
+    Queue        => $open_queue,
+    Lock         => $lock,     
+    Priority     => $priority,
+    State        => $open_state,   
+    Customer     => $mail_customer,
+    CustomerUser => $mail_customer, 
+    OwnerID      => $open_owner,  
+    UserID       => $open_owner,    
+    Responsible  => $responsible,
+    ) ;
+    my $ticket_id    = $rpc_connect->Dispatch( $soap_user, $soap_password, 'TicketObject', 'TicketCreate', %ticket_data ) ;
+
+    my %article_data = (
+    TicketID         => $ticket_id,  
+    ArticleType      => 'phone', 
+    SenderType       => 'agent', 
+    From             => $mail_from,     
+    To               => $mail_to, 
+    Subject          => "$hostname: $trigger_name",
+    Body             => "$hostname: $trigger_name",    
+    ContentType      => 'text/plain; UTF-8',    
+    HistoryType      => 'OwnerUpdate',  
+    HistoryComment   => 'Auto Ticket',
+    UserID           => 1,
+    NoAgentNotify    => 0,     
+    AutoResponseType => 'auto reply',    
+    );
+    $rpc_connect->Dispatch( $soap_user, $soap_password, 'TicketObject', 'ArticleCreate', %article_data) ;
+}
+
+
+sub search_ticket { 
+    my ( $hostname, $trigger_name ) = @_ ;
+    my %ticket_filter = (
+    Result        => 'ARRAY' || 'HASH' || 'COUNT',
+    StateType     => 'Open',
+    UserID        => $open_user,
+    Lock          => $lock,
+    Queue         => $open_queue,
+    OwnerID       => $open_owner ,
+    ContentSearch => 'AND',
+    Title         => "$hostname: $trigger_name",
+    ) ;    
+    my @found_ticket_ids = $rpc_connect->Dispatch( $soap_user, $soap_password, 'TicketObject', 'TicketSearch', %ticket_filter ) ;
+    return @found_ticket_ids ;  
+} 
+
+sub close_ticket  { 
+    my @ticket_ids = @_ ;
+    foreach my $ticket_id (@ticket_ids) {
+        my %ticket_status = (
+        State    => $close_state,
+        UserID   => $close_user,
+        TicketID => $ticket_id,
+        );
+        $rpc_connect->Dispatch( $soap_user, $soap_password, 'TicketObject', 'TicketStateSet', %ticket_status );
+    }
+}    
