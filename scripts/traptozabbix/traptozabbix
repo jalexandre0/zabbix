@@ -1,0 +1,24 @@
+#!/usr/bin/perl
+
+#AGPL
+
+# This is a snmptrapd handler script to convert snmp traps into zabbix
+# traps.
+
+use strict ;
+use warnings;
+my ($zabbixserver, $zabbixkey, $value )  = @ARGV ;
+
+
+#Path for zabbix_sender command
+
+my $zabbix_sender = "/usr/bin/zabbix_sender" ;
+my $zabbix_config = "/etc/zabbix/zabbix_agentd.conf" ;
+
+#Stripping hostname. The same are used in zabbix. 
+
+my $hostname = <STDIN>;
+chomp($hostname);
+
+system("$zabbix_sender -c $zabbix_config -z $zabbixserver -s $hostname -k $zabbixkey -o $value") ;
+
