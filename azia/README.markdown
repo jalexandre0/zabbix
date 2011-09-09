@@ -24,8 +24,6 @@ will look at /etc/azia.conf file.
 
 
 Note: azia is brazilian portuguese for 'heartburn'.
-Note2: I really wish thanks Mikeda for doing my work really easy. 
-Note3: I really like the "Armoured Zombies Initiating Assault" acronhym.
 
 [1]: http://zabbix.com "Zabbix"
 [2]: https://github.com/mikeda/ZabbixAPI.git "ZabbixAPI.pm"
