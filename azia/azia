@@ -1,0 +1,153 @@
+#!/usr/bin/perl 
+
+# azia is an interface to manipulating itens inside zabbix without
+# access database directly. Azia don't have, and I'll provide any 
+# kind of graphical, text or interactive interface, but you're free
+# to do it if you want. =)
+
+# Copyright (C) <2011>  <Jefferson Alexandre dos Santos>, 
+# <jefferson.santos@tecnisys.com.br> 
+# 
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+
+# TODO:
+# List   ( hosts, items, triggers and maintenance periods) 
+# Delete ( groups, items, triggers, maintenance period and all )
+# Maintenance(hosts, groups) 
+# Remove (from groups, from templates) 
+
+use warnings;
+use strict;
+use Data::Dumper;
+use AppConfig qw/:argcount/;
+use Getopt::Long;
+use ZabbixAPI; 
+
+# Used to call sub routines
+my $add     ;
+my $delete  ;
+my $list    ;
+my $help    ;
+my $verbose ; 
+my $maintenance ;
+
+# Used to receive values
+my $ip		 ;
+my $hostname ;
+my @templates;
+my @groups   ;
+my @configs	 ;
+my $port     ;
+my $config_file; 
+unless ($port) { $port = 10050 ; }
+unless ($config_file) { $config_file = "/etc/azia.conf" ; }
+
+GetOptions (	
+	'a|add'			 => \$add, 
+	'c|config=s'	 => \$config_file,
+	'd|delete'		 => \$delete, 
+	'g|groups=s@'	 => \@groups,
+	'h|hostname=s'	 => \$hostname,
+	'i|ip=s'		 => \$ip,  
+	'l|list'		 => \$list,
+	'm|maintenance'  => \$maintenance,
+	'p|port=s'		 => \$port,
+	't|templates=s@' => \@templates,
+	'help'		 	 => \$help,
+	'verbose'	 	 => \$verbose, 
+); 
+
+if  ($help) { help() ; exit 0 }
+
+
+my 	$config = AppConfig->new() ;
+
+$config->define(
+	'SERVER',   => { ARGCOUNT => ARGCOUNT_ONE, DEFAULT => "none",  },  
+	'USER',     => { ARGCOUNT => ARGCOUNT_ONE, DEFAULT => "none",  },
+	'PASSWORD', => { ARGCOUNT => ARGCOUNT_ONE, DEFAULT => "none",  },
+);
+
+#Parsing config file
+$config->file($config_file) ;
+
+#Calling Zabbix API
+my $zabbix = ZabbixAPI->new("http://".$config->SERVER()."/zabbix/");
+   $zabbix->auth($config->USER(), $config->PASSWORD() );
+
+if ($add) 	{
+	unless ($hostname) { help() ; exit 0 }
+	else {
+		my $groupids = $zabbix->hostgroup_get( 
+		{ filter => { name => \@groups } }, 'groupid' );
+
+		my $templateids = $zabbix->template_get(
+  		{ filter => { host => \@templates } }, 'templateid' );
+	
+		my $result = $zabbix->host_create({
+			host      => $hostname,
+  			ip        => $ip,
+ 			port      => $port,
+  			useip     => 1,
+			groups    => [
+    			map {{groupid    => $_}} @$groupids
+ 			],
+  			templates => [
+    			map {{templateid => $_}} @$templateids
+  			],
+		});
+	}
+}
+
+elsif ($delete) { 
+	unless ($hostname) { help() ; exit 0 } 
+	else {
+		my $hostid = $zabbix->host_get(
+		{ filter => { host => $hostname } },
+		'hostid' );
+
+		my $result = $zabbix->host_delete(
+		{ hostid  => @$hostid, } );
+	}
+}	
+
+elsif ($list)          { print "List: Must be created        \n" ; exit 0 } 
+elsif ($maintenance)   { print "Maintenance: Must be created \n" ; exit 0 } 
+else { help() ; exit 0 } 
+
+sub help { 
+	print "Usage: azia -a -h machine -i 192.168.1.1 -g routers -t routing_template  -t \"Linux Firewall\"  \n"; 	
+	print "Create, delete, list or put hosts in maintenance mode Zabbix. \n";
+	print "-a --add \t Add host to Zabbix. \n";
+	print "-d --delete \t Delete host from Zabbix. \n";
+	print "-c --config \t Config file for azia. If you don't use -c \n";
+	print "\t\t option, /etc/azia.conf will be used. \n";
+	print " \n";
+	print "-l --list \t List hosts from Zabbix.	\n";
+	print "-i --ip \t Ip address from host. Used with -a. \n";
+	print "-h --hostname \t Hostname from host. Used with -a. \n";
+	print "\n";
+	print "-t --templates \t Templates to be used with -a. \n";
+	print "\t\t You can specify multiple templates using -t template_1 \n";
+	print "\t\t -t template_2. If your templates have spaces in name, they \n";
+	print "\t\t must be quoted. The same is applyed to -g option. \n";
+	print "\n";
+	print "-g --groups \t Groups from host. Used with -a. \n";
+	print "-p  --port \t Port from host. Optional, used with -a. \n";
+	print "\t\t If you don't use -p option, port 10050 will be used. \n";
+	print "\n";
+	print "-m --maintenance \t Put your host in maintenance mode. \n";
+}	
