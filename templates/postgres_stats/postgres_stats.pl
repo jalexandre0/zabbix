@@ -25,7 +25,7 @@ use DBI;
 use warnings;
 use strict;
 
-my  ( $fetch, $dbname ) = @_ ;
+my  ( $fetch, $dbname ) = @ARGV;
 my  $dbuser = "postgres";
 
 unless ($fetch ) {
