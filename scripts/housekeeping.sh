@@ -2,7 +2,7 @@
 #    Manual housekeeping for mediums and large installations
 #    running with PostgreSQL, suffering with housekeeping curse. :D
 #
-#    Copyright (C) <2011>  <Jefferson Alexandre dos Santos>, <jefferson.alexandre [at] gmail [dot] com> 
+#    Copyright (C) <2011>-<2013>  <Jefferson Alexandre dos Santos>, <jefferson.alexandre [at] gmail [dot] com> 
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -28,9 +28,9 @@ ONE_MONTH_AGO=$(expr `date +%s` -  2678400)
 
 #Queries for one month ago
 MONTH_TABLES="history history_uint history_str history_text history_log"
-for $table in $MONTH_TABLES 
+for table in $MONTH_TABLES 
 	do
-		DELETES=$( /usr/bin/psql --dbname zabbix -c "delete from $i where  clock < $ONE_MONTH_AGO ;" )
+		DELETES=$( /usr/bin/psql --dbname zabbix -c "delete from $table where  clock < $ONE_MONTH_AGO ;" )
 		echo " $DELETES from table $table "
 	done
 
@@ -38,9 +38,9 @@ for $table in $MONTH_TABLES
 
 #Queries for one year ago
 YEAR_TABLES="alerts trends trends_uint"
-for $table in $YEAR_TABLES 
+for table in $YEAR_TABLES 
 	do
-		DELETES=$(/usr/bin/psql --dbname zabbix -c "delete from $i where clock < $ONE_YEAR_AGO ;")
-		echo " $DELETE from table $i "
+		DELETES=$(/usr/bin/psql --dbname zabbix -c "delete from $table where clock < $ONE_YEAR_AGO ;")
+		echo " $DELETE from table $table "
 	done
 

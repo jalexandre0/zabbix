@@ -1,0 +1,15 @@
+#!/usr/bin/perl -w
+
+
+print "{\n";
+print "\t\"data\":[\n\n";
+
+for (`/usr/bin/iostat -d 1 1 | grep -v Device  | grep -v Linux| awk '{print \$1}' | sed '/^\$/d' `)
+{	
+	chomp $_ ;
+    print "\t{\n";
+    print "\t\t\"{#BLOCKDEVICE}\":\"$_\",\n";
+    print "\t}\n"; 
+}
+print "\n\t]\n";
+print "}\n";

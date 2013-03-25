@@ -27,7 +27,7 @@ use warnings ;
 
 my @items ; 
 #Get Itens to be created before all hard work ;) 
-open my $input_fh, "</etc/fstab " 
+my $input_fh, "</etc/fstab " 
 	or die "Cant open file" ;
 while ( my $line = <$input_fh> ) {
 	#Super killer regex  stolen from Gandalf ( @dcsobral ) :-)

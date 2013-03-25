@@ -20,7 +20,7 @@
       </groups>
       <triggers/>
       <items>
-        <item type="7" key="postgres[blocks_hit]" value_type="3">
+        <item type="7" key="postgres.stats[blocks_hit]" value_type="3">
           <description>Postgres: Blocks Hit per second</description>
           <ipmi_sensor></ipmi_sensor>
           <delay>300</delay>
@@ -53,7 +53,7 @@
             <application>Postgres</application>
           </applications>
         </item>
-        <item type="7" key="postgres[blocks_read]" value_type="3">
+        <item type="7" key="postgres.stats[blocks_read]" value_type="3">
           <description>Postgres: Blocks read per second</description>
           <ipmi_sensor></ipmi_sensor>
           <delay>300</delay>
@@ -86,7 +86,7 @@
             <application>Postgres</application>
           </applications>
         </item>
-        <item type="7" key="postgres[buffers_clear]" value_type="3">
+        <item type="7" key="postgres.stats[buffers_clear]" value_type="3">
           <description>Postgres: Total of buffers clear</description>
           <ipmi_sensor></ipmi_sensor>
           <delay>300</delay>
@@ -119,7 +119,7 @@
             <application>Postgres</application>
           </applications>
         </item>
-        <item type="7" key="postgres[buffers_dirty]" value_type="3">
+        <item type="7" key="postgres.stats[buffers_dirty]" value_type="3">
           <description>Postgres: Total of buffers dirty</description>
           <ipmi_sensor></ipmi_sensor>
           <delay>300</delay>
@@ -152,7 +152,7 @@
             <application>Postgres</application>
           </applications>
         </item>
-        <item type="7" key="postgres[buffers_total]" value_type="3">
+        <item type="7" key="postgres.stats[buffers_total]" value_type="3">
           <description>Postgres: Total of buffers</description>
           <ipmi_sensor></ipmi_sensor>
           <delay>300</delay>
@@ -185,7 +185,7 @@
             <application>Postgres</application>
           </applications>
         </item>
-        <item type="7" key="postgres[buffers_used]" value_type="3">
+        <item type="7" key="postgres.stats[buffers_used]" value_type="3">
           <description>Postgres: Total of buffers used</description>
           <ipmi_sensor></ipmi_sensor>
           <delay>300</delay>
@@ -218,7 +218,7 @@
             <application>Postgres</application>
           </applications>
         </item>
-        <item type="7" key="postgres[commits]" value_type="3">
+        <item type="7" key="postgres.stats[commits]" value_type="3">
           <description>Postgres: Number of Commits per second</description>
           <ipmi_sensor></ipmi_sensor>
           <delay>300</delay>
@@ -251,7 +251,7 @@
             <application>Postgres</application>
           </applications>
         </item>
-        <item type="7" key="postgres[connections_idle]" value_type="3">
+        <item type="7" key="postgres.stats[connections_idle]" value_type="3">
           <description>Postgres: Number of connections idle</description>
           <ipmi_sensor></ipmi_sensor>
           <delay>300</delay>
@@ -284,7 +284,7 @@
             <application>Postgres</application>
           </applications>
         </item>
-        <item type="7" key="postgres[connections_idle_tnx]" value_type="3">
+        <item type="7" key="postgres.stats[connections_idle_tnx]" value_type="3">
           <description>Postgres: Number of connections in idle transactions</description>
           <ipmi_sensor></ipmi_sensor>
           <delay>300</delay>
@@ -317,7 +317,7 @@
             <application>Postgres</application>
           </applications>
         </item>
-        <item type="7" key="postgres[connections_total]" value_type="3">
+        <item type="7" key="postgres.stats[connections_total]" value_type="3">
           <description>Postgres: Number of connections</description>
           <ipmi_sensor></ipmi_sensor>
           <delay>300</delay>
@@ -350,7 +350,7 @@
             <application>Postgres</application>
           </applications>
         </item>
-        <item type="7" key="postgres[connections_waiting]" value_type="3">
+        <item type="7" key="postgres.stats[connections_waiting]" value_type="3">
           <description>Postgres: Number of connections waiting</description>
           <ipmi_sensor></ipmi_sensor>
           <delay>300</delay>
@@ -383,7 +383,7 @@
             <application>Postgres</application>
           </applications>
         </item>
-        <item type="7" key="postgres[db_blocks_hit,dbname]" value_type="3">
+        <item type="7" key="postgres.stats[db_blocks_hit,dbname]" value_type="3">
           <description>$2: Blocks hit per second</description>
           <ipmi_sensor></ipmi_sensor>
           <delay>300</delay>
@@ -416,7 +416,7 @@
             <application>Postgres</application>
           </applications>
         </item>
-        <item type="7" key="postgres[db_blocks_read,dbname]" value_type="3">
+        <item type="7" key="postgres.stats[db_blocks_read,dbname]" value_type="3">
           <description>$2: Blocks Read per second</description>
           <ipmi_sensor></ipmi_sensor>
           <delay>300</delay>
@@ -449,7 +449,7 @@
             <application>Postgres</application>
           </applications>
         </item>
-        <item type="7" key="postgres[db_commits,dbname]" value_type="3">
+        <item type="7" key="postgres.stats[db_commits,dbname]" value_type="3">
           <description>$2: Number of commits per second</description>
           <ipmi_sensor></ipmi_sensor>
           <delay>300</delay>
@@ -482,7 +482,7 @@
             <application>Postgres</application>
           </applications>
         </item>
-        <item type="7" key="postgres[db_rollbacks,dbname]" value_type="3">
+        <item type="7" key="postgres.stats[db_rollbacks,dbname]" value_type="3">
           <description>$2: Number of rollbacks per second</description>
           <ipmi_sensor></ipmi_sensor>
           <delay>300</delay>
@@ -515,7 +515,7 @@
             <application>Postgres</application>
           </applications>
         </item>
-        <item type="7" key="postgres[db_size,dbname]" value_type="3">
+        <item type="7" key="postgres.stats[db_size,dbname]" value_type="3">
           <description>$2: Size of database</description>
           <ipmi_sensor></ipmi_sensor>
           <delay>3600</delay>
@@ -548,7 +548,7 @@
             <application>Postgres</application>
           </applications>
         </item>
-        <item type="7" key="postgres[db_tuples_deleted,dbname]" value_type="3">
+        <item type="7" key="postgres.stats[db_tuples_deleted,dbname]" value_type="3">
           <description>$2: Number of tuples deleted per second</description>
           <ipmi_sensor></ipmi_sensor>
           <delay>300</delay>
@@ -581,7 +581,7 @@
             <application>Postgres</application>
           </applications>
         </item>
-        <item type="7" key="postgres[db_tuples_fetched,dbname]" value_type="3">
+        <item type="7" key="postgres.stats[db_tuples_fetched,dbname]" value_type="3">
           <description>$2: Number of tuples ferched per second</description>
           <ipmi_sensor></ipmi_sensor>
           <delay>300</delay>
@@ -614,7 +614,7 @@
             <application>Postgres</application>
           </applications>
         </item>
-        <item type="7" key="postgres[db_tuples_inserted,dbname]" value_type="3">
+        <item type="7" key="postgres.stats[db_tuples_inserted,dbname]" value_type="3">
           <description>$2: Number of tuples inserted per second</description>
           <ipmi_sensor></ipmi_sensor>
           <delay>300</delay>
@@ -647,7 +647,7 @@
             <application>Postgres</application>
           </applications>
         </item>
-        <item type="7" key="postgres[db_tuples_returned,dbname]" value_type="3">
+        <item type="7" key="postgres.stats[db_tuples_returned,dbname]" value_type="3">
           <description>$2:Number of tuples returned per second</description>
           <ipmi_sensor></ipmi_sensor>
           <delay>300</delay>
@@ -680,7 +680,7 @@
             <application>Postgres</application>
           </applications>
         </item>
-        <item type="7" key="postgres[db_tuples_updated,dbname]" value_type="3">
+        <item type="7" key="postgres.stats[db_tuples_updated,dbname]" value_type="3">
           <description>$2: Number of tuples updated per second</description>
           <ipmi_sensor></ipmi_sensor>
           <delay>300</delay>
@@ -713,7 +713,7 @@
             <application>Postgres</application>
           </applications>
         </item>
-        <item type="7" key="postgres[hit_ratio]" value_type="0">
+        <item type="7" key="postgres.stats[hit_ratio]" value_type="0">
           <description>Postgres: Hit Ratio</description>
           <ipmi_sensor></ipmi_sensor>
           <delay>3600</delay>
@@ -746,7 +746,7 @@
             <application>Postgres</application>
           </applications>
         </item>
-        <item type="7" key="postgres[hit_ratio,dbname]" value_type="0">
+        <item type="7" key="postgres.stats[hit_ratio,dbname]" value_type="0">
           <description>dbname: Hit Ratio</description>
           <ipmi_sensor></ipmi_sensor>
           <delay>3600</delay>
@@ -779,7 +779,7 @@
             <application>Postgres</application>
           </applications>
         </item>
-        <item type="7" key="postgres[max_idle_tnx]" value_type="0">
+        <item type="7" key="postgres.stats[max_idle_tnx]" value_type="0">
           <description>Postgres: Max time of idle transaction</description>
           <ipmi_sensor></ipmi_sensor>
           <delay>300</delay>
@@ -812,7 +812,7 @@
             <application>Postgres</application>
           </applications>
         </item>
-        <item type="7" key="postgres[max_running_tnx]" value_type="0">
+        <item type="7" key="postgres.stats[max_running_tnx]" value_type="0">
           <description>Postgres: Max time of running transaction</description>
           <ipmi_sensor></ipmi_sensor>
           <delay>300</delay>
@@ -845,7 +845,7 @@
             <application>Postgres</application>
           </applications>
         </item>
-        <item type="7" key="postgres[rollbacks]" value_type="3">
+        <item type="7" key="postgres.stats[rollbacks]" value_type="3">
           <description>Postgres: Number of rollbacks per second</description>
           <ipmi_sensor></ipmi_sensor>
           <delay>300</delay>
@@ -878,7 +878,7 @@
             <application>Postgres</application>
           </applications>
         </item>
-        <item type="7" key="postgres[size]" value_type="3">
+        <item type="7" key="postgres.stats[size]" value_type="3">
           <description>Postgres: Total size</description>
           <ipmi_sensor></ipmi_sensor>
           <delay>3600</delay>
@@ -911,7 +911,7 @@
             <application>Postgres</application>
           </applications>
         </item>
-        <item type="7" key="postgres[tuples_deleted]" value_type="3">
+        <item type="7" key="postgres.stats[tuples_deleted]" value_type="3">
           <description>Postgres: Number of deleted tuples per second</description>
           <ipmi_sensor></ipmi_sensor>
           <delay>300</delay>
@@ -944,7 +944,7 @@
             <application>Postgres</application>
           </applications>
         </item>
-        <item type="7" key="postgres[tuples_fetched]" value_type="3">
+        <item type="7" key="postgres.stats[tuples_fetched]" value_type="3">
           <description>Postgres: Number of tuples fetched per second</description>
           <ipmi_sensor></ipmi_sensor>
           <delay>300</delay>
@@ -977,7 +977,7 @@
             <application>Postgres</application>
           </applications>
         </item>
-        <item type="7" key="postgres[tuples_inserted]" value_type="3">
+        <item type="7" key="postgres.stats[tuples_inserted]" value_type="3">
           <description>Postgres: Number of tuples inserted per second</description>
           <ipmi_sensor></ipmi_sensor>
           <delay>300</delay>
@@ -1010,7 +1010,7 @@
             <application>Postgres</application>
           </applications>
         </item>
-        <item type="7" key="postgres[tuples_returned]" value_type="3">
+        <item type="7" key="postgres.stats[tuples_returned]" value_type="3">
           <description>Postgres: Number of tuples returned per second</description>
           <ipmi_sensor></ipmi_sensor>
           <delay>300</delay>
@@ -1043,7 +1043,7 @@
             <application>Postgres</application>
           </applications>
         </item>
-        <item type="7" key="postgres[tuples_updated]" value_type="3">
+        <item type="7" key="postgres.stats[tuples_updated]" value_type="3">
           <description>Postgres: Number of tuples updated per second</description>
           <ipmi_sensor></ipmi_sensor>
           <delay>300</delay>
@@ -1076,7 +1076,7 @@
             <application>Postgres</application>
           </applications>
         </item>
-        <item type="7" key="postgres[wall_files]" value_type="3">
+        <item type="7" key="postgres.stats[wall_files]" value_type="3">
           <description>Postgres: Number of Wall Files</description>
           <ipmi_sensor></ipmi_sensor>
           <delay>300</delay>
